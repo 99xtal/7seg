@@ -38,11 +38,11 @@ int main() {
     gpio_set_outover(gpio, GPIO_OVERRIDE_INVERT);
   }
 
-  char *test_string = "314159265"
+  char *test_string = "314159265";
   int i = 0;
   while (true)  {
     while (test_string[i] != '\0') {
-      int32_t mask = nums[i] << FIRST_GPIO; 
+      int32_t mask = map[test_string[i]] << FIRST_GPIO; 
       gpio_set_mask(mask);
       sleep_ms(250);
       gpio_clr_mask(mask);
