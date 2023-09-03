@@ -1,6 +1,8 @@
 # 7seg
 Control one-digit 7-segment display with a Raspberry Pi Pico
 
+![breadboard diagram](https://github.com/99xtal/7seg/blob/master/7seg_bb.png)
+
 ## Build
 _Prerequisites: Cmake_
 
