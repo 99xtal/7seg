@@ -1,8 +1,11 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "74hc595.c"
 
-#define FIRST_GPIO 12
+#define DATA_PIN 20
+#define CLK_PIN 15
+#define LATCH_PIN 14
 
 // 7-segment digit bitmasks
 #define SEG7_0 0x3f
@@ -19,7 +22,7 @@
 int main() {
   stdio_init_all();
 
-  int map[128];
+  uint8_t map[128];
   map['0'] = SEG7_0;
   map['1'] = SEG7_1;
   map['2'] = SEG7_2;
@@ -31,21 +34,27 @@ int main() {
   map['8'] = SEG7_8;
   map['9'] = SEG7_9;
 
-  // Init GPIO
-  for (int gpio = FIRST_GPIO; gpio < FIRST_GPIO + 7; gpio++) {
-    gpio_init(gpio);
-    gpio_set_dir(gpio, GPIO_OUT);
-    gpio_set_outover(gpio, GPIO_OVERRIDE_INVERT);
-  }
+  // Init clock pin
+  gpio_init(CLK_PIN);
+  gpio_set_dir(CLK_PIN, 1);
+
+  // Init data pin
+  gpio_init(DATA_PIN);
+  gpio_set_dir(DATA_PIN, 1);
+
+  // Init latch pin
+  gpio_init(LATCH_PIN);
+  gpio_set_dir(LATCH_PIN, 1);
+
+  sr_74hc595 *shift_register = new_sr_74hc595(CLK_PIN, DATA_PIN, LATCH_PIN);
 
   char *test_string = "314159265";
   int i = 0;
   while (true)  {
     while (test_string[i] != '\0') {
-      int32_t mask = map[test_string[i]] << FIRST_GPIO; 
-      gpio_set_mask(mask);
+      uint8_t mask = map[test_string[i]];
+      sr_74hc595_send_data(shift_register, mask);
       sleep_ms(250);
-      gpio_clr_mask(mask);
       i++;
     }
     sleep_ms(1000);
