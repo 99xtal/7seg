@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 # initialize pico-sdk from submodule
-include(pico-sdk/pico_sdk_init.cmake)
+include(lib/pico-sdk/pico_sdk_init.cmake)
 
 project(7seg)
 

@@ -1,0 +1,6 @@
+[submodule "lib/pico-sdk"]
+	path = lib/pico-sdk
+	url = https://github.com/raspberrypi/pico-sdk
+[submodule "lib/74hc595"]
+	path = lib/74hc595
+	url = https://github.com/99xtal/74hc595
